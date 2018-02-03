@@ -30,7 +30,14 @@ function isPrimeDatabase(n) {
     });
 }
 
+function fermatTheorem(a, p) {
+    return ((Math.pow(a, p - 1) % p) === 1);
+}
+
 function isPrimeFermat(n) {
+    for(a = 2 ; a < n ; a++) {
+        if(!fermatTheorem(a, n)) return false;
+    }
     return true;
 }
 
@@ -40,6 +47,7 @@ function displayResult(isPrime) {
 }
 
 $(document).ready(function() {
+    $('body').tooltip({ selector: '[data-toggle=tooltip]' });
     $('#prime-form').submit(function(e) {
         e.preventDefault();
         var number = parseInt($('input[name=number]').val());

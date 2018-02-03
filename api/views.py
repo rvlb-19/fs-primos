@@ -23,5 +23,4 @@ class PrimeDBView(APIView):
     def post(self, request, format=None):
         data = request.data
         number = data.get('number')
-
         return Response({ 'prime': PrimeNumber.objects.filter(number=number).count() > 0 })
