@@ -4,6 +4,7 @@
 
 *.pyc
 db.sqlite3
+eratosthenes.py
 
 venv/
 staticfiles/

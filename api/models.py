@@ -1,3 +1,4 @@
 from django.db import models
 
-# Create your models here.
+class PrimeNumber(models.Model):
+    number = models.CharField(max_length=1000)

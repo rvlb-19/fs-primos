@@ -11,7 +11,7 @@ function checkPrime(p, option) {
 }
 
 function isPrimeServer(n) {
-    $.post('/api/calculate_prime', { number: p }, function(data) {
+    $.post('/api/calculate_prime', { number: n }, function(data) {
         displayResult(data.prime);
     });
 }
@@ -25,7 +25,9 @@ function isPrimeBrowser(n) {
 }
 
 function isPrimeDatabase(n) {
-
+    $.post('/api/get_prime_from_db', { number: n }, function(data) {
+        displayResult(data.prime);
+    });
 }
 
 function isPrimeFermat(n) {
