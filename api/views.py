@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from .models import PrimeNumber
 
 from mpmath import *
-mp.dps=3000000
+mp.dps=10000000
 
 def primality_base_checking(request, func):
     data = request.data
