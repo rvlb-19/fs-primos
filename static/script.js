@@ -1,49 +1,72 @@
-function checkPrime(p, option) {
-    if(option === 'server') {
-        isPrimeServer(p);
-    } else if(option === 'browser') {
-        displayResult(isPrimeBrowser(p));
-    } else if(option === 'database') {
-        isPrimeDatabase(p);
-    } else if(option === 'fermat') {
-        displayResult(isPrimeFermat(p));
-    }
+function toggleSpinner(type, visibility) {
+    $('#result-'+type+' .fa-spinner').css('visibility', visibility ? 'visible' : 'hidden');
 }
 
-function isPrimeServer(n) {
-    $.post('/api/calculate_prime', { number: n }, function(data) {
-        displayResult(data.prime);
+function primeAsyncRequest(url, n, type, begin) {
+    $.post(url, { number: n }, function(data) {
+        var end = Date.now();
+        var delta = end - begin;
+        displayResult(n, data, type, delta);
     });
 }
 
-function isPrimeBrowser(n) {
-    if(n <= 1) return false;
+function isPrimeServer(n, begin) {
+    toggleSpinner('server', true);
+    primeAsyncRequest('/api/calculate_prime', n, 'server', begin);
+}
+
+function isPrimeDatabase(n, begin) {
+    toggleSpinner('db', true);
+    primeAsyncRequest('/api/get_prime_from_db', n, 'db', begin);
+}
+
+function isPrimeFermat(n, begin) {
+    toggleSpinner('fermat', true);
+    primeAsyncRequest('/api/fermat', n, 'fermat', begin);
+}
+
+function isPrime(n) {
+    if(n <= 1) return { prime: false, reason: 'Número negativo' };
     for(i = 2 ; i*i <= n ; i++) {
-        if(n % i == 0) return false;
+        if(n % i == 0) return { prime: false, reason: i+' é divisor' };
     }
-    return true;
+    return { prime: true, reason: '' };
 }
 
-function isPrimeDatabase(n) {
-    $.post('/api/get_prime_from_db', { number: n }, function(data) {
-        displayResult(data.prime);
-    });
+function isPrimeBrowser(n, begin) {
+    toggleSpinner('browser', true);
+    var result = isPrime(n);
+    var end = Date.now();
+    var delta = end - begin;
+    displayResult(n, result, 'browser', delta);
 }
 
-function fermatTheorem(a, p) {
-    return ((Math.pow(a, p - 1) % p) === 1);
+function displayResult(number, data, type, delta) {
+    toggleSpinner(type, false);
+    var isPrime = data.prime;
+
+    $('#text-'+type).html(number + (isPrime ? ' é primo' : ' não é primo'));
+    $('#delta-'+type).html('Tempo de execução: '+delta+'ms');
+    $('#result-'+type).css('visibility', 'visible');
+
+    if(isPrime) $('#tooltip-'+type).hide();
+    else $('#tooltip-'+type).tooltip({ title: data.reason }).show();
 }
 
-function isPrimeFermat(n) {
-    for(a = 2 ; a < n ; a++) {
-        if(!fermatTheorem(a, n)) return false;
-    }
-    return true;
+function hideResults() {
+    $('#result-browser').css('visibility', 'hidden');
+    $('#result-server').css('visibility', 'hidden');
+    $('#result-db').css('visibility', 'hidden');
+    $('#result-fermat').css('visibility', 'hidden');
 }
 
-function displayResult(isPrime) {
-    $('#false-result').html(isPrime ? '' : 'não');
-    $('#result').css('visibility', 'visible');
+function dispatchRequests(number) {
+    hideResults();
+    var begin = Date.now();
+    isPrimeServer(number, begin);
+    isPrimeDatabase(number, begin);
+    isPrimeFermat(number, begin);
+    isPrimeBrowser(number, begin);
 }
 
 $(document).ready(function() {
@@ -51,9 +74,8 @@ $(document).ready(function() {
     $('#prime-form').submit(function(e) {
         e.preventDefault();
         var number = parseInt($('input[name=number]').val());
-        var option = $('input[name=calc-option]:checked').val();
         if(number) {
-            checkPrime(number, option);
+            dispatchRequests(number);
             $('#typed-number').html(number);
         } else {
             alert('Digite um número!');

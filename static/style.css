@@ -1,7 +1,42 @@
 #main {
     min-height: 100vh;
+    background: #eee;
 }
 
-#result {
+.fa-exclamation-circle {
+    color: red;
+}
+
+.result-li {
+    position: relative;
+}
+
+.result-li .fa-spinner {
+    visibility: hidden;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+#results {
+    list-style: none;
+}
+
+#result-browser {
+    visibility: hidden;
+}
+
+#result-server {
+    visibility: hidden;
+}
+
+#result-db {
+    visibility: hidden;
+}
+
+#result-fermat {
     visibility: hidden;
 }

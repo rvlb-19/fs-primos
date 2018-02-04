@@ -10,47 +10,66 @@
         <title>Números Primos</title>
     </head>
     <body>
-        <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
-            <a class="navbar-brand" href="#">Verificador de Primalidade</a>
-        </nav>
         <div id="main" class="container-fluid d-flex flex-column align-items-center justify-content-center">
             <h4 class="p-4 text-center">Digite um número para verificar se ele é primo</h4>
-            <div class="pb-4">
-                <h5 class="text-center">Escolha a forma de verificação:</h5>
-                <div class="input-group">
-                    <label for="browser-radio">
-                        <input id="browser-radio" type="radio" name="calc-option" value="browser" checked>
-                        Calcular no browser
-                    </label>
-                </div>
-                <div class="input-group">
-                    <label for="server-radio">
-                        <input id="server-radio" type="radio" name="calc-option" value="server">
-                        Calcular no servidor
-                    </label>
-                </div>
-                <div class="input-group">
-                    <label for="database-radio">
-                        <input id="database-radio" type="radio" name="calc-option" value="database">
-                        Obter resultado de uma base de dados
-                    </label>
-                </div>
-                <div class="input-group">
-                    <label for="fermat-radio">
-                        <input id="fermat-radio" type="radio" name="calc-option" value="fermat">
-                        Calcular usando o Teste de Primalidade de Fermat
-                        <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top" title="Importante: este método pode não ser consistente para números muito grandes"></i>
-                    </label>
-                </div>
-            </div>
-            <form class="form-inline" id="prime-form">
-                <div class="form-group mb-0 mr-sm-3">
+            <form class="row justify-content-center" id="prime-form">
+                <div class="col-sm-8 form-group">
                     <input type="number" name="number" min="1" class="form-control">
                 </div>
-                <button type="submit" class="btn btn-primary">Verificar</button>
+                <div class="col-xs-4">
+                    <button type="submit" class="btn btn-primary">Verificar</button>
+                </div>
             </form>
-            <div id="result" class="p-4 text-center">
-                O número <span id="typed-number"></span> <span id="false-result"></span> é primo!
+            <div>
+                <ul id="results">
+                    <li id="result-browser" class="result-li">
+                        <i class="fas fa-spinner fa-pulse" data-fa-transform="grow-16"></i>
+                        <h6 class="p-2 m-0">Resultado do Browser</h6>
+                        <ul>
+                            <li>
+                                <span id="text-browser"></span>
+                                <i id="tooltip-browser" class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"></i>
+                            </li>
+                            <li id="delta-browser"></li>
+                        </ul>
+                    </li>
+                    <li id="result-server" class="result-li">
+                        <i class="fas fa-spinner fa-pulse" data-fa-transform="grow-16"></i>
+                        <h6 class="p-2 m-0">Resultado do Servidor</h6>
+                        <ul>
+                            <li>
+                                <span id="text-server"></span>
+                                <i id="tooltip-server" class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"></i>
+                            </li>
+                            <li id="delta-server"></li>
+                        </ul>
+                    </li>
+                    <li id="result-db" class="result-li">
+                        <i class="fas fa-spinner fa-pulse" data-fa-transform="grow-16"></i>
+                        <h6 class="p-2 m-0">Resultado do Banco de Dados</h6>
+                        <ul>
+                            <li>
+                                <span id="text-db"></span>
+                                <i id="tooltip-db" class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"></i>
+                            </li>
+                            <li id="delta-db"></li>
+                        </ul>
+                    </li>
+                    <li id="result-fermat" class="result-li">
+                        <i class="fas fa-spinner fa-pulse" data-fa-transform="grow-16"></i>
+                        <h6 class="p-2 m-0">
+                            Resultado do Teste de Primalidade de Fermat
+                            <i id="fermat-warning" class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top" title="Importante: este método pode não ser consistente para números grandes"></i>
+                        </h6>
+                        <ul>
+                            <li>
+                                <span id="text-fermat"></span>
+                                <i id="tooltip-fermat" class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"></i>
+                            </li>
+                            <li id="delta-fermat"></li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
         </div>
         <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
