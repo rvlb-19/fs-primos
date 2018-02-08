@@ -26,7 +26,7 @@ function isPrimeFermat(n, begin) {
 }
 
 function isPrime(n) {
-    if(n <= 1) return { prime: false, reason: 'Número negativo' };
+    if(n <= 1) return { prime: false, reason: 'Número menor do que 1' };
     for(i = 2 ; i*i <= n ; i++) {
         if(n % i == 0) return { prime: false, reason: i+' é divisor' };
     }
@@ -49,8 +49,13 @@ function displayResult(number, data, type, delta) {
     $('#delta-'+type).html('Tempo de execução: '+delta+'ms');
     $('#result-'+type).css('visibility', 'visible');
 
+    console.log(data);
+
     if(isPrime) $('#tooltip-'+type).hide();
-    else $('#tooltip-'+type).tooltip({ title: data.reason }).show();
+    else {
+        $('#tooltip-'+type).tooltip('dispose');
+        $('#tooltip-'+type).tooltip({ title: data.reason }).show();
+    }
 }
 
 function hideResults() {

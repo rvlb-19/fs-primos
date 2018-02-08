@@ -14,7 +14,7 @@ def primality_base_checking(request, func):
 
 def is_prime(n):
     if n <= 1:
-        return (False, 'Número negativo')
+        return (False, 'Número menor ou igual a 1')
     i = 2
     while i*i <= n:
         if n % i == 0:
